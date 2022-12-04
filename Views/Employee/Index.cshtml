@@ -1,5 +1,7 @@
-﻿@model List<MvcEmployeCrud.Models.EmployeeModel>
-@using System.Web;
+﻿@using System.Web;
+@using System.Collections;
+@using System;
+@model List<MvcEmployeCrud.Models.EmployeeModel>
 @{
     ViewBag.Title = "Index";
 }
@@ -22,6 +24,7 @@
             <th>Father Name</th>
             <th>Mobile Number</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -33,6 +36,7 @@
                 <td>@emp.FatherName</td>
                 <td>@emp.Mobile</td>
                 <td>@Html.ActionLink("Edit", "Update", new { id = emp.ID }) </td>
+                <td>@Html.ActionLink("Delete", "Delete", new { id = emp.ID }, new { onclick = "return confirm('Are you sure you wish to delete this article?');" }) </td>
             </tr>
         }
     </tbody>
