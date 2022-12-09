@@ -1,4 +1,5 @@
-﻿using MvcEmployeCrud.Models;
+﻿using MvcEmployeCrud.DAL;
+using MvcEmployeCrud.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,97 +12,63 @@ namespace MvcEmployeCrud.Repository
 {
     public class DepartmentRepository
     {
-        string Constr = WebConfigurationManager.ConnectionStrings["empConnectionString"].ConnectionString;
+        CompanyDBEntities _companyDBEntities = new CompanyDBEntities();
         // GET: Employee
         public List<DepartmentModel> GetDepartments()
         {
             List<DepartmentModel> departmentModels = new List<DepartmentModel>();
-            SqlConnection con = new SqlConnection(Constr);
-            SqlCommand cmd = new SqlCommand("sp_GetDepartment", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            con.Open();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            DataSet dataSet = new DataSet();
-            sqlDataAdapter.Fill(dataSet);
-            if (dataSet != null)
+            foreach (var employee in _companyDBEntities.Departments.ToList())
             {
-                foreach (DataRow employee in dataSet.Tables[0].Rows)
-                {
-                    DepartmentModel departmentModel = new DepartmentModel();
-                    departmentModel.ID = Convert.ToString(employee["ID"]); ;
-                    departmentModel.Name = Convert.ToString(employee["Name"]);
-                    departmentModels.Add(departmentModel);
-                }
+                DepartmentModel departmentModel = new DepartmentModel();
+                departmentModel.ID = employee.ID.ToString();
+                departmentModel.Name = employee.Name;
+                departmentModels.Add(departmentModel);
             }
-            con.Close();
             return departmentModels;
         }
 
         public bool AddDepartment(DepartmentModel departmentModel)
         {
-            SqlConnection con = new SqlConnection(Constr);
-            SqlCommand cmd = new SqlCommand("sp_InsertDepartment", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@name", departmentModel.Name); 
-            con.Open();
-            int result = cmd.ExecuteNonQuery();
-            con.Close();
-            if (result == 0)
-                return true;
-            else
-                return false;
+            Department department = new Department
+            {
+                ID = new Guid(departmentModel.ID),
+                Name = departmentModel.Name
+            };
+            _companyDBEntities.Departments.Add(department);
+            _companyDBEntities.SaveChanges();
+            return true;
         }
 
 
-        public DepartmentModel GetDepartmentById(int Id)
+        public DepartmentModel GetDepartmentById(string Id)
         {
-            DepartmentModel departmentModel = new DepartmentModel();
-            SqlConnection con = new SqlConnection(Constr);
-            SqlCommand cmd = new SqlCommand("sp_GetDeparmentByID", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@id", Id);
-            con.Open();
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter(cmd);
-            DataSet dataSet = new DataSet();
-            sqlDataAdapter.Fill(dataSet);
-            if (dataSet != null)
+            var department = _companyDBEntities.Departments.FirstOrDefault(x => x.ID == new Guid(Id));
+            DepartmentModel departmentModel = new DepartmentModel
             {
-
-                departmentModel.ID = Convert.ToString(dataSet.Tables[0].Rows[0]["ID"]);
-                departmentModel.Name = Convert.ToString(dataSet.Tables[0].Rows[0]["Name"]); 
-            }
-            con.Close();
+                ID = department.ID.ToString(),
+                Name = department.Name
+            };
             return departmentModel;
         }
         public bool Update(DepartmentModel departmentModel)
         {
-            SqlConnection con = new SqlConnection(Constr);
-            SqlCommand cmd = new SqlCommand("sp_UpdateDeparment", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@id", departmentModel.ID);
-            cmd.Parameters.AddWithValue("@name", departmentModel.Name); 
-            con.Open();
-            int result = cmd.ExecuteNonQuery();
-            con.Close();
-            if (result == 0)
-                return true;
-            else
-                return false;
+            Department department = new Department
+            {
+                ID = new Guid(departmentModel.ID),
+                Name = departmentModel.Name
+            };
+            _companyDBEntities.Entry<Department>(department);
+            _companyDBEntities.Entry(department).State = System.Data.Entity.EntityState.Modified;
+            _companyDBEntities.SaveChanges();
+            return true;
         }
 
-        public bool Delete(int id)
+        public bool Delete(string id)
         {
-            SqlConnection con = new SqlConnection(Constr);
-            SqlCommand cmd = new SqlCommand("sp_DeleteDepartmentByID", con);
-            cmd.CommandType = CommandType.StoredProcedure;
-            cmd.Parameters.AddWithValue("@id", id);
-            con.Open();
-            int result = cmd.ExecuteNonQuery();
-            con.Close();
-            if (result == 0)
-                return true;
-            else
-                return false;
+            var department = _companyDBEntities.Departments.FirstOrDefault(x => x.ID == new Guid(id)); 
+            _companyDBEntities.Departments.Remove(department);
+            _companyDBEntities.SaveChanges();
+            return true;
         }
     }
 
