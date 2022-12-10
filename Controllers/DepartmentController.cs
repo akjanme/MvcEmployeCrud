@@ -1,5 +1,6 @@
 ﻿using MvcEmployeCrud.Models;
 using MvcEmployeCrud.Repository;
+using System.Linq;
 using System.Web.Mvc;
 
 namespace MvcEmployeCrud.Controllers
@@ -15,6 +16,7 @@ namespace MvcEmployeCrud.Controllers
         public ActionResult Index()
         {
             var departments = _departmentRepository.GetDepartments();
+           
             return View(departments);
         }
         public ActionResult Create()

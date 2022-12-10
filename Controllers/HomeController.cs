@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MvcEmployeCrud.Models;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -25,6 +27,9 @@ namespace MvcEmployeCrud.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+        public void CollectionExample()
+        { 
         }
     }
 }

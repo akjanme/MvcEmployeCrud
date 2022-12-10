@@ -70,6 +70,43 @@ namespace MvcEmployeCrud.Repository
             _companyDBEntities.SaveChanges();
             return true;
         }
+
+
+
+        private List<DepartmentModel> GetDepartmentsList()
+        {
+            List<DepartmentModel> departmentModels = new List<DepartmentModel>();
+            foreach (var employee in _companyDBEntities.Departments.ToList())
+            {
+                DepartmentModel departmentModel = new DepartmentModel();
+                departmentModel.ID = employee.ID.ToString();
+                departmentModel.Name = employee.Name;
+                departmentModels.Add(departmentModel);
+            }
+            return departmentModels;
+        }
+
+
+        private List<DepartmentModel> GetDepartmentsByName(string name)
+        {
+            var departmentlist = GetDepartmentsList();
+            return departmentlist.Where(x=>x.Name == name).ToList(); 
+        }
+        private List<string> GetDepartmentsID()
+        {
+            var departmentlist = GetDepartmentsList();
+            return departmentlist.Select(x => x.Name).ToList();
+        }
+        private List<char> GetDepartmentsselectMany()
+        {
+            var departmentlist = GetDepartmentsList();
+            return departmentlist.SelectMany(x => x.Name).ToList();
+        }
+        private List<DepartmentModel> GetUniqueRecord()
+        {
+            var departmentlist = GetDepartmentsList();
+            return departmentlist.Distinct().ToList();
+        }
     }
 
 }
