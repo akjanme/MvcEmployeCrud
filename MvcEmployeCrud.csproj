@@ -129,6 +129,10 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="CollectionInCsharp\CollectionInfo.cs" />
+    <Compile Include="CollectionInCsharp\Employee.cs" />
+    <Compile Include="CollectionInCsharp\LambdaExpression.cs" />
+    <Compile Include="CollectionInCsharp\LinqQueries.cs" />
+    <Compile Include="CollectionInCsharp\Program.cs" />
     <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
