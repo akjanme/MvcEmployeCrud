@@ -1,7 +1,7 @@
 ﻿@using System.Web;
 @using System.Collections;
 @using System;
-@model List<MvcEmployeCrud.Models.EmployeeModel>
+@model MvcEmployeCrud.Models.EmployeeDepartmentModel
 @{
     ViewBag.Title = "Index";
 }
@@ -19,25 +19,46 @@
 <table class="table table-condensed">
     <thead>
         <tr>
-            <th>ID </th>
             <th>Name</th>
-            <th>Father Name</th>
-            <th>Mobile Number</th>
             <th></th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var emp in Model)
+        @foreach (var emp in Model.employeeModels)
         {
             <tr>
-                <td>@emp.ID</td>
                 <td>@emp.Name </td>
-                <td>@emp.FatherName</td>
-                <td>@emp.Mobile</td>
-                <td>@Html.ActionLink("Edit", "Update", new { id = emp.ID }) </td>
+                <td> <button id="btnDetail" onclick="getDetail(@emp.ID)" value="Detail">Detail</button> </td>
                 <td>@Html.ActionLink("Delete", "Delete", new { id = emp.ID }, new { onclick = "return confirm('Are you sure you wish to delete this article?');" }) </td>
             </tr>
         }
     </tbody>
 </table>
+<div id="detail">
+
+</div>
+@section scripts{
+     <script>
+         function getDetail(id) {
+              
+             $.ajax({
+                 url: "/Employee/Detail",
+                 data: { "id": id},
+                 method: "POST",
+                 dataType: "json",
+                 success: function (data) {
+                     var html = '<table><tr><td>Name : ' + data.Name + '</td></tr><tr><td>' + data.FatherName + '</td></tr><tr><td>' + data.Mobile + '</td></tr></table>';
+                     $('#detail').html(html);
+                 },
+                 error: function (ex) {
+
+                 },
+
+
+             });
+         }
+
+     </script>
+    
+}

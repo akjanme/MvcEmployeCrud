@@ -162,6 +162,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DepartmentModel.cs" />
+    <Compile Include="Models\EmployeeDepartmentModel.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DepartmentRepository.cs" />
@@ -228,6 +229,7 @@
     <Content Include="Views\NewDepartment\Index.cshtml" />
     <Content Include="Views\NewDepartment\Update.cshtml" />
     <Content Include="Views\NewDepartment\Create.cshtml" />
+    <Content Include="Views\Employee\Detail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

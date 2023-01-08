@@ -9,7 +9,7 @@
 
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(x=>x.ID)
+        @Html.HiddenFor(x => x.ID)
         <div class="form-horizontal">
             <div class="form-group">
                 @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "col-md-3" })
@@ -39,7 +39,29 @@
                     <input type="submit" value="Update" class="btn btn-success" />
                 </div>
             </div>
+            <div class="row">
+                EmployeeDepartment :   @ViewBag.EmployeeDepartment
+
+                @ViewData["EmployeeList"]
+                <table>
+                    @foreach (var emp in (List<MvcEmployeCrud.Models.EmployeeModel>)TempData["EmployeeList"])
+                    {
+                        <tr>
+                            <td>@emp.ID</td>
+                            <td>@emp.Name </td>
+                            <td>
+                                
+                                @*@Html.ActionLink("Edit", "Update", new { id = emp.ID })*@ 
+                                <a href="/Employee/Update?id=@emp.ID">Edit</a>
+
+                            </td>
+                            <td>@Html.ActionLink("Delete", "Delete", new { id = emp.ID }, new { onclick = "return confirm('Are you sure you wish to delete this Department?');" }) </td>
+                        </tr>
+                    }
+                </table>
+            </div>
         </div>
+
 
     }
 </div>
